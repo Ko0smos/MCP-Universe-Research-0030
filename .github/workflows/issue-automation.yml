@@ -1,18 +1,14 @@
 name: Issue Automation
-
 on:
-  push:
-    branches: [dev]
-  pull_request:
-    branches: [dev]
-
+  issues:
+    types: [opened]
 jobs:
-  - name: Check issue labels
+  - name: Add comment based on label
     run-if: \
       github.event_name == 'issues'
       && github.event.action == 'opened'
     run:
-      - name: Add comment based on label
+      - name: Add comment
         id: add_comment
         uses: actions/text
         with:
