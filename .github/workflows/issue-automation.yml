@@ -12,16 +12,33 @@ jobs:
         id: add_comment
         uses: actions/github-script
         with:
-          body: \
+          script: |
             if (github.event.issue.labels.find(label => label.name === 'bug')) {
-              echo('Thank you. We will fix it.')
+              github.rest.issues.createComment({
+                issue_number: github.event.issue.number,
+                owner: github.event.repository.owner.login,
+                repo: github.event.repository.name,
+                body: 'Thank you. We will fix it.'
+              });
             } else if (github.event.issue.labels.find(label => label.name === 'feature')) {
-              echo('Thank you, we will consider to include this feature.')
+              github.rest.issues.createComment({
+                issue_number: github.event.issue.number,
+                owner: github.event.repository.owner.login,
+                repo: github.event.repository.name,
+                body: 'Thank you, we will consider to include this feature.'
+              });
             } else if (github.event.issue.labels.find(label => label.name === 'discussion')) {
-              echo('Thanks for starting this discussion! We welcome community input.')
+              github.rest.issues.createComment({
+                issue_number: github.event.issue.number,
+                owner: github.event.repository.owner.login,
+                repo: github.event.repository.name,
+                body: 'Thanks for starting this discussion! We welcome community input.'
+              });
             } else {
-              echo('Thank you for your contribution!')
+              github.rest.issues.createComment({
+                issue_number: github.event.issue.number,
+                owner: github.event.repository.owner.login,
+                repo: github.event.repository.name,
+                body: 'Thank you for your contribution!'
+              });
             }
-          issue_number: ${{ github.event.issue.number }}
-          owner: ${{ github.event.repository.owner.login }}
-          repo: ${{ github.event.repository.name }}
