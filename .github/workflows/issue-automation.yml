@@ -10,17 +10,18 @@ jobs:
     run:
       - name: Add comment
         id: add_comment
-        uses: actions/text
+        uses: actions/github-script
         with:
           body: \
-            if contains( github.event.issue.labels.*.name, 'bug' ):
-              echo 'Thank you. We will fix it.'
-            elif contains( github.event.issue.labels.*.name, 'feature' ):
-              echo 'Thank you, we will consider to include this feature.'
-            elif contains( github.event.issue.labels.*.name, 'discussion' ):
-              echo 'Thanks for starting this discussion! We welcome community input.'
-            else:
-              echo 'Thank you for your contribution!'
+            if (github.event.issue.labels.find(label => label.name === 'bug')) {
+              echo('Thank you. We will fix it.')
+            } else if (github.event.issue.labels.find(label => label.name === 'feature')) {
+              echo('Thank you, we will consider to include this feature.')
+            } else if (github.event.issue.labels.find(label => label.name === 'discussion')) {
+              echo('Thanks for starting this discussion! We welcome community input.')
+            } else {
+              echo('Thank you for your contribution!')
+            }
           issue_number: ${{ github.event.issue.number }}
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
