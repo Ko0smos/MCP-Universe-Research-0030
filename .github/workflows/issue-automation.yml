@@ -1,0 +1,30 @@
+name: Issue Automation
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+
+jobs:
+  - name: Check issue labels
+    run-if: \
+      github.event_name == 'issues'
+      && github.event.action == 'opened'
+    run:
+      - name: Add comment based on label
+        id: add_comment
+        uses: actions/text
+        with:
+          body: \
+            if contains( github.event.issue.labels.*.name, 'bug' ):
+              echo 'Thank you. We will fix it.'
+            elif contains( github.event.issue.labels.*.name, 'feature' ):
+              echo 'Thank you, we will consider to include this feature.'
+            elif contains( github.event.issue.labels.*.name, 'discussion' ):
+              echo 'Thanks for starting this discussion! We welcome community input.'
+            else:
+              echo 'Thank you for your contribution!'
+          issue_number: ${{ github.event.issue.number }}
+          owner: ${{ github.event.repository.owner.login }}
+          repo: ${{ github.event.repository.name }}
