@@ -1,0 +1,14 @@
+name: issue-comment-automation
+
+on: [issues]
+
+jobs:
+  comment-on-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add comment
+        uses: actions-comment-action
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment: ${{ github.event.label.name == 'bug' ? 'Thank you. We will fix it.' : (github.event.label.name == 'feature' ? 'Thank you, we will consider to include this feature.' : 'Thanks for starting this discussion! We welcome community input.') }}
+          token: ${{ secrets.GITHUB_TOKEN }}
