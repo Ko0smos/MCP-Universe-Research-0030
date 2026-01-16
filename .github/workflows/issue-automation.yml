@@ -5,7 +5,7 @@ on:
 jobs:
   - name: Add comment based on label
     run-if: \
-      github.event_name == 'issues'
+      github.event_name == 'issue'
       && github.event.action == 'opened'
     run:
       - name: Add comment
